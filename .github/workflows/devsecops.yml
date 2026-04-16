@@ -69,6 +69,7 @@ jobs:
     - name: DAST — OWASP ZAP
       run: |
         docker run --network=host \
+          -v ${{ github.workspace }}:/zap/wrk \
           ghcr.io/zaproxy/zaproxy:stable \
           zap-api-scan.py \
             -t http://localhost:8080/v3/api-docs \
@@ -76,7 +77,6 @@ jobs:
             -r zap-report.html \
             -I
       continue-on-error: true
-
     - name: Upload ZAP report
       uses: actions/upload-artifact@v4
       if: always()
